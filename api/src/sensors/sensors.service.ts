@@ -83,11 +83,11 @@ export class SensorsService {
       LIMIT 10;
     */
     const inicio = new Date();
-    inicio.setDate( inicio.getDay()  - diasAtras );
+    inicio.setDate( inicio.getDate()  - diasAtras );
     inicio.setHours(0,0,0,0);
 
     const fin = new Date();
-    fin.setDate( fin.getDay()  - diasAtras );
+    fin.setDate( fin.getDate()  - diasAtras );
     fin.setHours(23,59,59,999);
 
     return await this.sensorRepository.find({
@@ -143,6 +143,8 @@ export class SensorsService {
       .addSelect('MIN(s.temperatura_celcius)', 'temp_minima')
       .addSelect('MAX(s.temperatura_celcius)', 'temp_maxima')
       .addSelect('AVG(s.distancia_cm)', 'dist_promedio')
+      .addSelect('MIN(s.distancia_cm)', 'dist_minima')
+      .addSelect('MAX(s.distancia_cm)', 'dist_maxima')
       .getRawOne();
   }
 

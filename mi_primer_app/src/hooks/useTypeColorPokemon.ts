@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { pandoraApi } from "../api/pandoraApi";
+import { pokeGet } from "../api/pokeApi";
 import { PokemonDetailResponse, Type} from "../interfaces/pokemonResponse";
 
 export interface TypePokemon {
@@ -49,9 +49,14 @@ export const useTypeColorPokemon = ( id: string | number ): UseTypeColorPokemon 
 
   const loadType = async () => {
     setIsLoading(true);
-    const response = await pandoraApi.get<PokemonDetailResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    getColorType( response.data.types )
-    setIsLoading(false);
+    try {
+      const data = await pokeGet<PokemonDetailResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      getColorType( data.types )
+    } catch (e) {
+      console.log(`No se pudo cargar el tipo del Pokémon ${id}:`, e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {

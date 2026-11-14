@@ -1,30 +1,37 @@
 import { useState, useRef, useEffect } from "react";
-import { pandoraApi } from "../api/pandoraApi";
+import { pokeGet, spriteUrl } from "../api/pokeApi";
 import { PokedexReponse, Result, NewPokemon } from "../interfaces/pokemonResponse";
 
 export const usePokemonPaginated = () => {
 
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ pokemonList, setPokemonList ] = useState<NewPokemon[]>([]);
+  const [ error, setError ] = useState<string | null>(null);
 
   const nextUrl = useRef< string|null >("https://pokeapi.co/api/v2/pokemon");
+  const loading = useRef<boolean>(false);
 
   const loadPokemon = async () => {
 
+    if (loading.current || !nextUrl.current) return;
+
+    loading.current = true;
     setIsLoading(true);
+    setError(null);
 
-    if(!nextUrl.current){
+    try {
+      const data = await pokeGet<PokedexReponse>(nextUrl.current);
+
+      nextUrl.current = data.next;
+
+      newPokemonList( data.results );
+    } catch (e) {
+      console.log('No se pudo cargar la Pokédex:', e);
+      setError('No se pudo cargar la Pokédex. Revisa que la API esté encendida.');
+    } finally {
+      loading.current = false;
       setIsLoading(false);
-      return;
     }
-
-    const response = await pandoraApi.get<PokedexReponse>(nextUrl.current);
-
-    nextUrl.current = response.data.next;
-
-    newPokemonList( response.data.results );
-
-    setIsLoading(false);
 
   }
 
@@ -34,7 +41,7 @@ export const usePokemonPaginated = () => {
       // https://pokeapi.co/api/v2/pokemon/1/ asasss
       const urlParts = url.split('/');
       const id = urlParts[ urlParts.length - 2 ];
-      const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+      const image = spriteUrl(`sprites/pokemon/other/official-artwork/${id}.png`);
       return { id, name, url, image };
     });
 
@@ -46,7 +53,7 @@ export const usePokemonPaginated = () => {
     loadPokemon();
   },[]);
 
-  return { isLoading, pokemonList, loadPokemon };
+  return { isLoading, pokemonList, loadPokemon, error };
 
 }
 

@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { T } from '../theme/colors';
 import { Screen1 } from "../screens/stack/Screen1";
 import { Screen2 } from "../screens/stack/Screen2";
 import { Screen3 } from "../screens/stack/Screen3";
@@ -20,20 +21,20 @@ export const StackNavigator = () => {
         headerShown: true,
         headerStyle: {
           height: 50,
-          shadowColor: 'purple',
-          backgroundColor: 'pink',
-          borderColor: 'purple',
+          shadowColor: T.sombra,
+          backgroundColor: T.acentoClaro,
+          borderColor: T.acento,
           borderWidth: 5,
           borderRadius: 15,
           opacity: 0.6
         },
         headerTitleStyle: {
           fontWeight: 'bold',
-          color: 'purple'
+          color: T.texto
         },
-        headerTintColor: 'purple',
+        headerTintColor: T.texto,
         cardStyle: {
-          backgroundColor: 'rgb(245,241,218)'
+          backgroundColor: T.fondo
         }
       }}
     >

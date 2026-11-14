@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { InventarioService } from './inventario.service';
 import { CreateInventarioDto } from './dto/create-inventario.dto';
 import { UpdateInventarioDto } from './dto/update-inventario.dto';
+import { Inventario } from './entities/inventario.entity';
 
 @Controller('inventario')
 export class InventarioController {
   constructor(private readonly inventarioService: InventarioService) {}
 
   @Post()
-  create(@Body() createInventarioDto: CreateInventarioDto) {
+  create(@Body(new ValidationPipe()) createInventarioDto: CreateInventarioDto) {
     return this.inventarioService.create(createInventarioDto);
+  }
+
+  @Post('masivo')
+  insertMasivo(@Body() lecturas: Inventario[]) {
+    return this.inventarioService.insertMasivo(lecturas);
   }
 
   @Get()
@@ -17,18 +23,21 @@ export class InventarioController {
     return this.inventarioService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.inventarioService.findOne(+id);
+  @Get(':id_inventario')
+  findOne(@Param('id_inventario', ParseIntPipe) id_inventario: number) {
+    return this.inventarioService.findOne(id_inventario);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInventarioDto: UpdateInventarioDto) {
-    return this.inventarioService.update(+id, updateInventarioDto);
+  @Patch(':id_inventario')
+  update(
+    @Param('id_inventario', ParseIntPipe) id_inventario: number,
+    @Body(new ValidationPipe()) updateInventarioDto: UpdateInventarioDto,
+  ) {
+    return this.inventarioService.update(id_inventario, updateInventarioDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.inventarioService.remove(+id);
+  @Delete(':id_inventario')
+  remove(@Param('id_inventario', ParseIntPipe) id_inventario: number) {
+    return this.inventarioService.remove(id_inventario);
   }
 }

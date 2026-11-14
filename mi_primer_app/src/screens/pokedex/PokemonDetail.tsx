@@ -1,3 +1,4 @@
+import { T } from '../../theme/colors';
 import {
   View,
   Text,
@@ -20,12 +21,12 @@ export const PokemonDetail = ({ navigation, route }: Props) => {
   const { isLoading, color } = useTypeColorPokemon(id);
   const { detailPokemon } = useDetailPokemon(id);
 
-  const primaryColor = isLoading ? '#1B1B2F' : color[0];
+  const primaryColor = isLoading ? T.acento : (color[0] ?? T.acento);
   const secondaryColor = isLoading
-    ? '#2A2A45'
+    ? T.secundario
     : color.length > 1
     ? color[1]
-    : color[0];
+    : (color[0] ?? T.secundario);
 
   return (
     <View style={styles.container}>
