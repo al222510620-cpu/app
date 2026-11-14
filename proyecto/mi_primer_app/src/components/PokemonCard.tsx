@@ -1,3 +1,4 @@
+import { T } from '../theme/colors';
 import {
   View,
   Text,
@@ -9,6 +10,8 @@ import {
 import { NewPokemon } from '../interfaces/pokemonResponse';
 import { useTypeColorPokemon } from '../hooks/useTypeColorPokemon';
 import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { PokemonParams } from '../navigator/PokemonNavigator';
 
 interface Props {
   pokemon: NewPokemon;
@@ -19,11 +22,11 @@ const CARD_SIZE = withWindows * 0.42;
 
 export const PokemonCard = ({ pokemon }: Props) => {
   const { color, isLoading } = useTypeColorPokemon(`${pokemon.id}`);
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<PokemonParams>>();
 
-  const primaryColor = isLoading ? '#1B1B2F' : color[0];
+  const primaryColor = isLoading ? T.acento : (color[0] ?? T.acento);
   const secondaryColor = isLoading
-    ? '#2A2A45'
+    ? T.secundario
     : color.length > 1
     ? color[1]
     : color[0];
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderRadius: 999,
     backgroundColor: '#FFFFFF',
-    shadowColor: '#000',
+    shadowColor: T.sombra,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.22,
     shadowRadius: 12,

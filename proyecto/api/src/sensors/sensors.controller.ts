@@ -25,7 +25,7 @@ export class SensorsController {
   }
 
   @Patch(':id_sensor')
-  update(@Param('id_sensord') id_sensor: number, @Body( new ValidationPipe() ) updateSensorDto: UpdateSensorDto) {
+  update(@Param('id_sensor') id_sensor: number, @Body( new ValidationPipe() ) updateSensorDto: UpdateSensorDto) {
     return this.sensorsService.update(id_sensor, updateSensorDto);
   }
 

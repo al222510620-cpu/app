@@ -5,7 +5,7 @@ import { NewPokemon } from "../interfaces/pokemonResponse";
 
 export type PokemonParams = {
   HomePokedex: undefined;
-  PokemonDetail: NewPokemon;
+  PokemonDetail: { NewPokemon: NewPokemon };
 }
 
 const Stack = createStackNavigator<PokemonParams>();

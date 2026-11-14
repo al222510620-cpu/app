@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { T } from '../theme/colors';
 
 interface Props {
   action:   () => void;
@@ -7,7 +8,7 @@ interface Props {
   title:    string;
 }
 
-export const Fab = ( { action, color = 'violet', position, title }:Props ) => {
+export const Fab = ( { action, color = T.primario, position, title }:Props ) => {
 
   const btnPosition = ( position == 'right' ) ? style.fabLocationBr : style.fabLocationBl;
 
@@ -44,14 +45,16 @@ const style = StyleSheet.create({
     left: 25,
   },
   fab: {
-    backgroundColor: 'blue',
+    backgroundColor: T.primario,
     width: 50, 
     height: 50,
     borderRadius: 100,
+    borderWidth: 3,
+    borderColor: T.acentoSuave,
     justifyContent: 'center'
   },
   fabText: {
-    color: 'white',
+    color: T.blanco,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center'

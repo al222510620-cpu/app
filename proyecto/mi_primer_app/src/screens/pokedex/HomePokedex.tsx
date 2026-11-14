@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { T } from '../../theme/colors';
 import {
   View,
   Text,
@@ -13,26 +14,37 @@ import { appTheme } from '../../theme/appTheme';
 import { PokemonCard } from '../../components/PokemonCard';
 
 const THEMES = {
-  pastel: {
-    background: '#FFE5EC',                    
-    pokeballTint: 'rgba(255, 182, 193, 0.5)', 
-    title: '#8B3A62',                        
-    titleShadow: 'rgba(255, 255, 255, 0.8)',  
-    subtitle: '#B8638A',                      
-    spinner: '#FF6B9D',                       
+  agua: {
+    background: '#DFF5F1',
+    pokeballTint: 'rgba(23, 138, 127, 0.25)',
+    title: '#00695C',
+    titleShadow: 'rgba(255, 255, 255, 0.8)',
+    subtitle: '#43706B',
+    spinner: '#178A7F',
     buttonBg: '#FFFFFF',
-    buttonText: '#FF6B9D',
-    buttonBorder: '#FFB6C1',
+    buttonText: '#00695C',
+    buttonBorder: '#A7E3DA',
+  },
+  mar: {
+    background: '#E0F0F4',
+    pokeballTint: 'rgba(47, 125, 140, 0.25)',
+    title: '#1F5866',
+    titleShadow: 'rgba(255, 255, 255, 0.8)',
+    subtitle: '#2F7D8C',
+    spinner: '#2F7D8C',
+    buttonBg: '#FFFFFF',
+    buttonText: '#1F5866',
+    buttonBorder: '#B2DCE6',
   },
 };
 
 export const HomePokedex = () => {
-  const { pokemonList, loadPokemon } = usePokemonPaginated();
-  const [themeName, setThemeName] = useState<'pastel' | 'mint'>('pastel');
+  const { pokemonList, loadPokemon, error, isLoading } = usePokemonPaginated();
+  const [themeName, setThemeName] = useState<'agua' | 'mar'>('agua');
   const theme = THEMES[themeName];
 
   const toggleTheme = () =>
-    setThemeName((prev) => (prev === 'pastel' ? 'mint' : 'pastel'));
+    setThemeName((prev) => (prev === 'agua' ? 'mar' : 'agua'));
 
   return (
     <View style={[appTheme.container, { backgroundColor: theme.background }]}>
@@ -54,6 +66,7 @@ export const HomePokedex = () => {
         activeOpacity={0.7}
       >
         <Text style={[styles.themeButtonText, { color: theme.buttonText }]}>
+          Cambiar tema
         </Text>
       </TouchableOpacity>
 
@@ -86,11 +99,31 @@ export const HomePokedex = () => {
         onEndReached={loadPokemon}
         onEndReachedThreshold={0.2}
         ListFooterComponent={
-          <ActivityIndicator
-            style={styles.footerLoader}
-            size="large"
-            color={theme.spinner}
-          />
+          error ? (
+            <View style={styles.errorBox}>
+              <Text style={[styles.errorText, { color: theme.title }]}>{error}</Text>
+              <TouchableOpacity
+                onPress={loadPokemon}
+                style={[
+                  styles.themeButton,
+                  styles.retryButton,
+                  { backgroundColor: theme.buttonBg, borderColor: theme.buttonBorder },
+                ]}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.themeButtonText, { color: theme.buttonText }]}>
+                  Reintentar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <ActivityIndicator
+              style={styles.footerLoader}
+              size="large"
+              color={theme.spinner}
+              animating={isLoading || pokemonList.length === 0}
+            />
+          )
         }
       />
     </View>
@@ -108,6 +141,23 @@ const styles = StyleSheet.create({
     zIndex: 0,
     tintColor: '#000000',
   },
+  themeButton: {
+    position: 'absolute',
+    top: 48,
+    right: 16,
+    zIndex: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    borderWidth: 2,
+  },
+  themeButtonText: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  listContent: {
+    paddingBottom: 24,
+  },
   columnWrapper: {
     justifyContent: 'space-between',
     gap: 12,
@@ -122,9 +172,9 @@ const styles = StyleSheet.create({
   fontSize: 46,
   fontWeight: '900',
   letterSpacing: -1.5,
-  color: '#8B3A62',                          
+  color: T.primario,                          
   textAlign: 'center',                       
-  textShadowColor: 'black(255, 255, 255, 0.9)',  
+  textShadowColor: 'rgba(255, 255, 255, 0.9)',
   textShadowOffset: { width: 0, height: 3 },
   textShadowRadius: 10,
 },
@@ -136,11 +186,27 @@ subtitle: {
   textAlign: 'center',                       
   marginTop: 4,
   letterSpacing: 0.2,
-  textShadowColor: 'black(255, 255, 255, 0.7)',  
+  textShadowColor: 'rgba(255, 255, 255, 0.7)',
   textShadowOffset: { width: 0, height: 1 },
   textShadowRadius: 4,
 },
   footerLoader: {
     height: 120,
+  },
+  errorBox: {
+    alignItems: 'center',
+    paddingVertical: 32,
+    paddingHorizontal: 24,
+    gap: 16,
+  },
+  errorText: {
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  retryButton: {
+    position: 'relative',
+    top: 0,
+    right: 0,
   },
 });

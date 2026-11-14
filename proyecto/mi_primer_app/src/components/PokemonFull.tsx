@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { T } from '../theme/colors';
 import { PokemonDetailResponse } from '../interfaces/pokemonResponse';
 
 interface Props {
@@ -80,7 +81,7 @@ const DataCard = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#8BC34A',
+    backgroundColor: T.acento,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     borderWidth: 8, 
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     marginTop: -24,
     paddingTop: 24,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: T.sombra,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: 'Montserrat_700Bold', 
     fontSize: 14,
-    color: '#2E7D32', 
+    color: T.primario, 
     textTransform: 'uppercase',
     letterSpacing: 1.5,
     marginBottom: 12,
@@ -120,13 +121,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 80,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: T.acentoClaro,
     borderWidth: 1,
-    borderColor: '#E5E5EA',
+    borderColor: T.borde,
   },
   chipText: {
     fontFamily: 'Inter_700Bold', 
-    color: '#1A1A1A',
+    color: T.texto,
     fontSize: 13,
     letterSpacing: 0.8,
   },
@@ -140,10 +141,10 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 16,
     padding: 16,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: T.tarjeta,
     borderWidth: 1,
-    borderColor: '#EEEEEE',
-    shadowColor: '#000',
+    borderColor: T.borde,
+    shadowColor: T.sombra,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
   dataLabel: {
     fontFamily: 'Inter_400Regular', 
     fontSize: 11,
-    color: '#888',
+    color: T.suave,
     letterSpacing: 0.8,
     marginBottom: 6,
     textTransform: 'uppercase',
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   dataValue: {
     fontFamily: 'Montserrat_700Bold', 
     fontSize: 26,
-    color: '#1A1A1A',
+    color: T.texto,
     textAlign: 'center',
   },
 
@@ -177,10 +178,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 6,
-    backgroundColor: '#F7F7F9',
+    backgroundColor: T.fondo,
     borderWidth: 1,
-    borderColor: '#EEEEEE',
-    shadowColor: '#000',
+    borderColor: T.borde,
+    shadowColor: T.sombra,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 4,

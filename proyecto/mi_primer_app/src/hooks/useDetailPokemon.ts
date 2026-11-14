@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { PokemonDetailResponse } from "../interfaces/pokemonResponse";
-import { pandoraApi } from "../api/pandoraApi";
+import { pokeGet } from "../api/pokeApi";
 
 interface UseDetailPokemon {
   isLoading: boolean;
@@ -13,9 +13,14 @@ export const useDetailPokemon = ( id: string | number ): UseDetailPokemon => {
 
   const loadPokemon = async () => {
     setIsLoading(true);
-    const response = await pandoraApi.get<PokemonDetailResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    setDetailPokemon(response.data);
-    setIsLoading(false);
+    try {
+      const data = await pokeGet<PokemonDetailResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      setDetailPokemon(data);
+    } catch (e) {
+      console.log(`No se pudo cargar el detalle del Pokémon ${id}:`, e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect( () => {

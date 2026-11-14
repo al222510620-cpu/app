@@ -1,8 +1,11 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { T } from '../theme/colors';
 import {
   DrawerContentScrollView,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 interface BtnProps {
   navigate: () => void;
@@ -24,6 +27,7 @@ const BtnMenu = ({ navigate, text }: BtnProps) => {
 };
 
 export const DrawerMenu = ({ navigation }: DrawerContentComponentProps) => {
+  const { authState, logout } = useContext(AuthContext);
   return (
     <DrawerContentScrollView
       contentContainerStyle={styles.scrollContent}
@@ -32,11 +36,15 @@ export const DrawerMenu = ({ navigation }: DrawerContentComponentProps) => {
       <View style={styles.container}>
         <View style={styles.avatarBorder}>
           <Image
-           style={styles.avatar}
-            source={require('./../../assets/avatar.png.jpeg')}
-       />
+            style={styles.avatar}
+            source={
+              authState.avatar
+                ? { uri: `data:image/png;base64,${authState.avatar}` }
+                : require('./../../assets/avatar.png.jpeg')
+            }
+          />
         </View>
-        <Text style={styles.username}>Citlali Haide</Text>
+        <Text style={styles.username}>{authState.username ?? 'Entrenador'}</Text>
         <View style={styles.buttonsContainer}>
           <BtnMenu
             text="Pokédex"
@@ -50,6 +58,38 @@ export const DrawerMenu = ({ navigation }: DrawerContentComponentProps) => {
             text="Formulario"
             navigate={() => navigation.navigate('FormScreen')}
           />
+          <BtnMenu
+            text="Galería"
+            navigate={() => navigation.navigate('ImagePickerScreen')}
+          />
+          <BtnMenu
+            text="Ubicación"
+            navigate={() => navigation.navigate('LocationScreen')}
+          />
+          <BtnMenu
+            text="Entrenadores"
+            navigate={() => navigation.navigate('UserStackNavigator')}
+          />
+          <BtnMenu
+            text="Dashboard"
+            navigate={() => navigation.navigate('DataResponseScreen')}
+          />
+          <BtnMenu
+            text="Calificaciones"
+            navigate={() => navigation.navigate('CalificacionesScreen')}
+          />
+          <BtnMenu
+            text="Alumnos"
+            navigate={() => navigation.navigate('AlumnosScreen')}
+          />
+          <BtnMenu
+            text="Inventario"
+            navigate={() => navigation.navigate('InventarioNavigator')}
+          />
+          <BtnMenu
+            text="Cerrar sesión"
+            navigate={() => logout()}
+          />
         </View>
       </View>
     </DrawerContentScrollView>
@@ -58,13 +98,13 @@ export const DrawerMenu = ({ navigation }: DrawerContentComponentProps) => {
 
 const styles = StyleSheet.create({
   drawerBackground: {
-    backgroundColor: '#F5EFE1',        
+    backgroundColor: T.fondo,        
   },
   scrollContent: {
     flexGrow: 1,
   },
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     paddingTop: 40,
     paddingHorizontal: 20,
@@ -75,11 +115,11 @@ const styles = StyleSheet.create({
     width: 180,
     borderRadius: 90,
     borderWidth: 5,
-    borderColor: '#24B1B1',          
+    borderColor: T.acento,          
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#24B1B1',
+    shadowColor: T.acento,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
     shadowRadius: 12,
@@ -92,7 +132,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 26,
-    color: '#1B5E20',                  
+    color: T.texto,                  
     fontWeight: '900',
     letterSpacing: -0.5,
     marginTop: 16,
@@ -102,7 +142,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 3,
     borderRadius: 2,
-    backgroundColor: 'pink',        
+    backgroundColor: T.acento,        
     marginBottom: 24,
   },
   buttonsContainer: {
@@ -120,15 +160,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E5DEC9',           
-    shadowColor: '#000',
+    borderColor: T.borde,           
+    shadowColor: T.sombra,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 3,
   },
   btnText: {
-    color: '#1B5E20',                  
+    color: T.texto,                  
     fontSize: 17,
     fontWeight: '800',
     letterSpacing: 0.3,

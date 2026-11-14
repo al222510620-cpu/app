@@ -1,6 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { T } from '../theme/colors';
 import { UserRespose } from '../interfaces/pandoraApiRest';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StackUserParams } from '../navigator/UserStackNavigator';
 
 interface Props {
   user: UserRespose;
@@ -8,7 +11,7 @@ interface Props {
 
 export const UserCard = ( { user } :Props ) => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<StackUserParams>>();
 
     return(
       <TouchableOpacity
@@ -56,7 +59,7 @@ const style = StyleSheet.create({
   cardContent: {
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: "violet",
+    backgroundColor: T.secundario,
     borderRadius: 20,
     height: 120,
     justifyContent: 'center',
